@@ -5,6 +5,7 @@ import AuthLayout from '@/layouts/AuthLayout.vue'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
+import ProblemList from '@/views/ProblemList.vue'
 
 const routes = [
     {
@@ -12,6 +13,7 @@ const routes = [
         component: DefaultLayout,
         children: [
             { path: '', component: Home },
+            { path: 'problems', component: ProblemList }
         ]
     },
     {
