@@ -1,42 +1,69 @@
-<script setup lang="ts">
-import type { Problem } from '@/types/problem'
-
-defineProps<{
-  problem: Problem
-}>()
-</script>
-
 <template>
-  <div class="problem-card problem-row">
-    <!-- ID -->
-    <div class="col id">
-      {{ problem.id }}
+  <div
+    class="problem-card problem-row"
+    @click="goDetail"
+  >
+    <!-- Status -->
+    <div class="col status">
+      <span class="status-dot" :class="problem.status?.toLowerCase()" />
     </div>
+
+    <!-- ID -->
+    <div class="col id">{{ problem.pid }}</div>
 
     <!-- Title -->
     <div class="col title">
-      <h3 class="name">{{ problem.title }}</h3>
-      <p class="desc">{{ problem.description }}</p>
+      <div class="name">{{ problem.title }}</div>
+      <div class="desc">{{ problem.description }}</div>
     </div>
 
     <!-- Difficulty -->
     <div class="col difficulty">
-      <span
-        class="difficulty-tag"
-        :class="problem.difficulty.toLowerCase()"
-      >
+      <span class="tag" :class="problem.difficulty?.toLowerCase()">
         {{ problem.difficulty }}
       </span>
     </div>
   </div>
 </template>
 
+<script setup lang="ts">
+import type { Problem } from '@/types/problem'
+import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+
+const props = defineProps<{
+  problem: Problem
+}>()
+
+const router = useRouter()
+
+function goDetail() {
+  router.push(`/problems/${props.problem.pid}`)
+}
+
+const statusText = computed(() => {
+  switch (props.problem.status) {
+    case 'AC':
+      return 'Accepted'
+    case 'WA':
+      return 'Wrong Answer'
+    default:
+      return 'Not Submitted'
+  }
+})
+</script>
+
 <style scoped>
-.problem-card {
-  height: 56px;
-  border-bottom: 1px solid #f3f4f6;
-  background: #ffffff;
+.problem-row {
+  display: grid;
   cursor: pointer;
+  grid-template-columns: 50px 80px 1fr 100px;
+  align-items: center;
+}
+
+.problem-card {
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .problem-card:hover {
@@ -45,57 +72,68 @@ defineProps<{
 
 .col {
   padding: 0 12px;
-  overflow: hidden;
 }
 
+/* ===== 状态点 ===== */
+.status {
+  text-align: center;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d1d5db; /* TODO */
+}
+
+.status-dot.ac {
+  background: #10b981;
+}
+
+.status-dot.wa {
+  background: #ef4444;
+}
+
+/* ===== 其他列 ===== */
 .id {
   text-align: center;
-  font-weight: 500;
-  color: #374151;
+  color: #6b7280;
 }
 
 .title {
-  overflow: hidden;
+  text-align: left;
 }
 
 .name {
-  margin: 0;
-  font-size: 15px;
-  color: #111827;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 500;
 }
 
 .desc {
-  margin: 2px 0 0;
   font-size: 12px;
   color: #6b7280;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .difficulty {
   text-align: center;
 }
 
-.difficulty-tag {
-  padding: 4px 10px;
-  font-size: 12px;
+.tag {
+  padding: 2px 8px;
   border-radius: 12px;
+  font-size: 12px;
   color: #fff;
 }
 
-.easy {
+.tag.easy {
   background: #10b981;
 }
 
-.medium {
+.tag.medium {
   background: #f59e0b;
 }
 
-.hard {
+.tag.hard {
   background: #ef4444;
 }
 </style>

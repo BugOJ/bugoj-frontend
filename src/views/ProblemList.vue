@@ -6,7 +6,9 @@ import ProblemCard from '@/components/ProblemCard.vue'
 import type { Problem } from '@/types/problem'
 
 const problems = ref<Problem[]>([
-    {id: 'P1001', title: 'A + B Problem', description: 'Calculate the sum of two integers.', difficulty: 'Easy'},
+    {pid: 'P1001', title: 'A + B Problem', description: 'Calculate the sum of two integers.', difficulty: 'Easy', status: 'AC'},
+    {pid: 'P1002', title: 'A + B + C Problem', description: 'Calculate the sum of three integers.', difficulty: 'Medium', status: 'WA'},
+    {pid: 'P1003', title: 'A + B + C + D Problem', description: 'Calculate the sum of four integers.', difficulty: 'Hard', status: 'TODO'},
 ])
 
 onMounted(async () => {
@@ -15,15 +17,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <h1 class="page-title">题目列表</h1>
   <div class="page">
-    
-    <div class="list-container">
-      <ProblemHeader />
+    <h1>题目列表</h1>
 
+    <div class="list">
+      <ProblemHeader />
       <ProblemCard
         v-for="p in problems"
-        :key="p.id"
+        :key="p.pid"
         :problem="p"
       />
     </div>
@@ -32,21 +33,14 @@ onMounted(async () => {
 
 <style scoped>
 .page {
-  max-width: 1600px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 0;
 }
 
-.page-title {
-  margin-bottom: 12px;
-  font-size: 22px;
-}
-
-.list-container {
+.list {
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   overflow: hidden;
 }
-
 </style>

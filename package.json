@@ -11,10 +11,16 @@
   "dependencies": {
     "@arco-design/web-vue": "^2.57.0",
     "axios": "^1.13.2",
+    "highlight.js": "^11.11.1",
+    "katex": "^0.16.27",
+    "markdown-it": "^14.1.0",
+    "markdown-it-katex": "^2.0.3",
+    "monaco-editor": "^0.55.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.15.3",
     "@vitejs/plugin-vue": "^5.2.2",
     "@vue/tsconfig": "^0.7.0",
