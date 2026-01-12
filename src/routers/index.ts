@@ -6,7 +6,7 @@ import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import ProblemList from '@/views/ProblemList.vue'
-// import ProblemDetail from '@/views/ProblemDetail.vue'
+import ProblemDetail from '@/views/ProblemDetail.vue'
 
 const routes = [
     {
@@ -18,10 +18,9 @@ const routes = [
         ]
     },
     {
-      path: '/problems/:pid',
-      name: 'problem-detail',
-      component: () => import('@/views/ProblemDetail.vue'),
-      props: true,
+    path: '/problem/:id',
+    name: 'ProblemDetail',
+    component: ProblemDetail,
     },
     {
         path: '/',

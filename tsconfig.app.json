@@ -8,7 +8,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
 
     /* Add this for alias support */
     "baseUrl": ".",

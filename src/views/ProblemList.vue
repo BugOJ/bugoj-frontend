@@ -1,46 +1,84 @@
+<template>
+  <div class="problem-list">
+    <a-table
+      :columns="columns"
+      :data="problems"
+      row-key="id"
+      :pagination="false"
+      hoverable
+      @row-click="goDetail"
+    />
+  </div>
+</template>
+
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref,h} from 'vue'
+import { Tag } from '@arco-design/web-vue'
+import { useRouter } from 'vue-router'
+
 import { getProblemList } from '@/services/problem'
-import ProblemHeader from '@/components/ProblemHeader.vue'
-import ProblemCard from '@/components/ProblemCard.vue'
 import type { Problem } from '@/types/problem'
+import type { TableColumnData } from '@arco-design/web-vue'
+
+const router = useRouter()
 
 const problems = ref<Problem[]>([
-    {pid: 'P1001', title: 'A + B Problem', description: 'Calculate the sum of two integers.', difficulty: 'Easy', status: 'AC'},
-    {pid: 'P1002', title: 'A + B + C Problem', description: 'Calculate the sum of three integers.', difficulty: 'Medium', status: 'WA'},
-    {pid: 'P1003', title: 'A + B + C + D Problem', description: 'Calculate the sum of four integers.', difficulty: 'Hard', status: 'TODO'},
+    {pid: 'P1001', title: 'A + B Problem', difficulty: 'Easy'},
+    {pid: 'P1002', title: 'A + B + C Problem', difficulty: 'Medium'},
+    {pid: 'P1003', title: 'A + B + C + D Problem', difficulty: 'Hard'},
 ])
 
 onMounted(async () => {
   problems.value = await getProblemList()
 })
-</script>
 
-<template>
-  <div class="page">
-    <h1>题目列表</h1>
+const columns: TableColumnData[] = [
+  {
+    title: 'ID',
+    dataIndex: 'pid',
+    width: 80,
+    align: 'center',
+  },
+  {
+    title: 'Title',
+    dataIndex: 'title',
+    render: ({ record }: { record: Problem }) =>
+      h(
+        'span',
+        { style: { color: '#165dff', cursor: 'pointer' } },
+        record.title
+      ),
+  },
+  {
+  title: 'Difficulty',
+  dataIndex: 'difficulty',
+  width: 120,
+  align: 'center',
+  render: ({ record }: any) => {
+    const colorMap: any = {
+      Easy: '#52c41a',
+      Medium: 'gold',
+      Hard: 'orangered',
+    }
 
-    <div class="list">
-      <ProblemHeader />
-      <ProblemCard
-        v-for="p in problems"
-        :key="p.pid"
-        :problem="p"
-      />
-    </div>
-  </div>
-</template>
+    return h(
+      Tag,
+      { color: colorMap[record.difficulty] },
+      () => record.difficulty
+    )
+  },
+}
+]
 
-<style scoped>
-.page {
-  max-width: 1200px;
-  margin: 0 auto;
+function goDetail(record: Problem) {
+  router.push(`/problem/${record.pid}`)
 }
 
-.list {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  overflow: hidden;
+</script>
+
+<style scoped>
+.problem-list {
+  max-width: 900px;
+  margin: 24px auto;
 }
 </style>
